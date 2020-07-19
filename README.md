@@ -26,7 +26,8 @@ Then, run the app
 Then, in your browser, open http://localhost:3000/ to view it! 🎉 🎉
 
 This is a sample project created with:
-- ReactJS
+- React
+- Typescript
 - Redux
 - redux-persist
 - CSS-in-JS with [Styled Components](https://styled-components.com/)
