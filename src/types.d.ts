@@ -1,8 +1,8 @@
 //GET /gists/:gist_id/forks
 type Fork ={
-  user: User;
-  url: string;
+  html_url: string;
   id: string;
+  owner: User;
 }
 
 type User = {
@@ -25,7 +25,7 @@ type Gist = {
   files: FileType[];
   description: string;
   owner: User;
-  // forks: Fork[];
+  forks: Fork[];
 };
 
 type GistsState = {
@@ -36,6 +36,3 @@ type GistsState = {
   searchQueue: string
 };
 
-type ForkState = {
-  forks: Fork[];
-}

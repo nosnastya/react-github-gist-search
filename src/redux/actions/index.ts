@@ -31,10 +31,10 @@ export const requestGistForks = (id: string) => {
   return async (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
     return await fetch(`https://api.github.com/gists/${id}/forks?page=1&per_page=3`)
       .then(res => res.json())
-      .then(json => dispatch(setGistForks([...json])))
-      .catch(err => dispatch(setGistsFailed(err.message)))
 }
 };
+
+const gistForks = (id: string ) => {`https://api.github.com/gists/${id}/forks?page=1&per_page=3`;}
 
 // needed for persisting query to local storage
 export const changeSearchQueue = (searchQueue: string) => {
@@ -46,9 +46,16 @@ export const changeSearchQueue = (searchQueue: string) => {
 export const loadGists = (searchQuery: string) => {
     return async (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
         dispatch(requestGists());
-        return await fetch(`https://api.github.com/users/${searchQuery}/gists`)
+        return await fetch(`https://api.github.com/users/${searchQuery}/gists?page=1&per_page=2`)
             .then(res => res.json())
-            .then(json => dispatch(setGists([...json])))
+            .then(json => {
+              let gists = json;
+              for (let i = 0; i < gists.length; i++) {
+                  let item = fetch(gistForks(gists[i].id));
+                  gists[i]['forks'] = item.json();
+              }
+              dispatch(setGists([...gists]))
+            })
             .then(() => dispatch(setGistsResolved(true)))
             .catch(err => dispatch(setGistsFailed(err.message)))
     }

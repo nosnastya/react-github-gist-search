@@ -26,6 +26,7 @@ function gistsReducer(
             isLoading: false,
             gists: action.payload
           };
+
         case Constants.SET_GISTS_RESOLVED:
             return {
                 ...state,
