@@ -1,4 +1,3 @@
-//GET /gists/:gist_id/forks
 type Fork ={
   html_url: string;
   id: string;
@@ -32,7 +31,5 @@ type GistsState = {
   isLoading: boolean;
   isResolved: boolean;
   gists: Gist[];
-  error: string | null;
-  searchQueue: string
+  error: string
 };
-

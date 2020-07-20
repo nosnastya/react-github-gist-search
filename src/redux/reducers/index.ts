@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import gistsReducer from "./gists";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
+import gistsReducer from "./gists";
 
 const rootReducer = combineReducers({
     gists: gistsReducer

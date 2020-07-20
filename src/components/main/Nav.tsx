@@ -1,23 +1,21 @@
 
 import React, { useState } from "react";
 import { RootState } from "../../redux/reducers";
-import { loadGists, resetGists, changeSearchQueue } from "../../redux/actions"
+import { loadGists } from "../../redux/actions"
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "redux";
 import styles from "./Nav.module.scss";
 import * as _ from "lodash";
+import { Button } from "../shared/Button";
 
 const mapStateToProps = (state: RootState) => ({
-    isLoading: state.gists.isLoading,
-    searchQueue: state.gists.searchQueue
+    isLoading: state.gists.isLoading
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
     bindActionCreators(
         {
-          loadGists,
-          resetGists,
-          changeSearchQueue
+          loadGists
         },
         dispatch
     );
@@ -25,32 +23,24 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export const UnconnectedNav: React.FC<Props> = ({
-  loadGists,
-  resetGists,
-  changeSearchQueue,
-  searchQueue
+  loadGists
 }) => {
-    const [searchQuery, setSearchQuery] = useState(searchQueue);
+    const [searchQuery, setSearchQuery] = useState('');
     const [isSearchTop, setIsSearchTop] = useState(false);
 
-    const loadResults = ({ searchQuery = searchQueue}: {searchQuery?: string})  => {
-        if (searchQuery && searchQuery.length >= 3) {
+    const loadResults = (searchQuery: string)  => {
+        if (searchQuery.length >= 1) {
             setIsSearchTop(true)
             loadGists(searchQuery);
         }
     };
 
-    // useEffect(() => {
-    //     loadResults({});
-    // },[]); // needed to run only once on component render
-
-    const debouncedOnChange = _.debounce((searchQuery) => loadResults({searchQuery: searchQuery}), 1000);
+    const debouncedOnChange = _.debounce((searchQuery) => loadResults(searchQuery), 1000);
 
 
     const onSubmit = (e: React.SyntheticEvent) => {
       e.preventDefault();
       if (searchQuery === '') {
-        resetGists();
         setIsSearchTop(false);
         } else {
           debouncedOnChange(searchQuery);
@@ -64,7 +54,6 @@ export const UnconnectedNav: React.FC<Props> = ({
 
         event.persist();
 
-        changeSearchQueue(searchString); // needed for persisting data on page reload
         setSearchQuery(searchString);
     };
 
@@ -77,7 +66,7 @@ export const UnconnectedNav: React.FC<Props> = ({
                     </svg>
                     <div className="mar-lft--10">
                         <h1 className="mar-no text-dark-gray">Github Searcher</h1>
-                        <p className="text-gray mar-no">Search users or repositories below</p>
+                        <p className="text-gray mar-no">Search gists below</p>
                     </div>
                 </div>
                 <div className="disp-flex">
@@ -85,18 +74,12 @@ export const UnconnectedNav: React.FC<Props> = ({
                       <input
                           type="search"
                           name="search"
-                          placeholder="Start typing to search..."
+                          placeholder="Search gists by username"
                           className={styles.searchInput}
                           value={searchQuery}
                           onChange={onChange}
                       />
-                      {/* <Select
-                          className="mar-lft--10"
-                          options={searchOptions}
-                          defaultValue={selectedEntityType}
-                          onChange={(entityType) => handleSelectChange(entityType)}
-                      /> */}
-                      <button type="submit">Submit</button>
+                      <Button type="submit" className="mar-lft--10" btnText="Search"/>
                     </form>
                 </div>
             </div>

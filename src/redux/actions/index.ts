@@ -1,78 +1,77 @@
 import { typedAction } from "../helpers/typedAction";
 import { Dispatch, AnyAction } from "redux";
 import { RootState } from "../reducers/index";
-import { Constants } from "../../enums/shared";
+import {
+  REQUEST_GISTS,
+  SET_GISTS_RESOLVED,
+  SET_GISTS_FAILED,
+  SET_GIST_FORKS_RESOLVED,
+  SET_GIST_FORKS_FAILED,
+} from "./types";
+import api from '../../helpers/api';
+import { ApiResponse } from "apisauce";
 
-const setGists = (gists: Gist[]) => {
-    return typedAction(Constants.SET_GISTS, gists);
-};
+const baseUrl = 'https://api.github.com/';
 
 const requestGists = () => {
-    return typedAction(Constants.REQUEST_GISTS);
+  return typedAction(REQUEST_GISTS);
 };
 
-const setGistsResolved = (isResolved: boolean) => {
-    return typedAction(Constants.SET_GISTS_RESOLVED, isResolved);
+const setGistsResolved = (gists: Gist[]) => {
+  return typedAction(SET_GISTS_RESOLVED, gists);
 };
 
 const setGistsFailed = (error: string) => {
-  return typedAction(Constants.SET_GISTS_FAILED, error);
+  return typedAction(SET_GISTS_FAILED, error);
 };
 
-const setSearchQueue = (searchQueue: string) => {
-    return typedAction(Constants.SET_SEARCH_QUEUE, searchQueue);
+const setGistForksResolved = (forksObj:{forks: Fork[] | [], id: string}) => {
+  return typedAction(SET_GIST_FORKS_RESOLVED, forksObj);
 };
 
-const setGistForks = (forks: Fork[]) => {
-  return typedAction(Constants.SET_GIST_FORKS, forks);
+const setGistForksFailed = (error: string) => {
+  return typedAction(SET_GIST_FORKS_FAILED, error);
 };
 
-export const requestGistForks = (id: string) => {
-  return async (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
-    return await fetch(`https://api.github.com/gists/${id}/forks?page=1&per_page=3`)
-      .then(res => res.json())
-}
-};
-
-const gistForks = (id: string ) => {`https://api.github.com/gists/${id}/forks?page=1&per_page=3`;}
-
-// needed for persisting query to local storage
-export const changeSearchQueue = (searchQueue: string) => {
-    return (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
-        dispatch(setSearchQueue(searchQueue));
-    }
+export const loadGistForks = (id: string) => {
+  return (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
+    api.get(`${baseUrl}gists/${id}/forks?page=1&per_page=3`)
+    .then((response: ApiResponse<any>) => {
+      if(response.ok) {
+        if(response.data.length > 0) {
+          const deserializedForks = { forks: response.data || [], id };
+          dispatch(setGistForksResolved(deserializedForks));
+        }
+      } else {
+        dispatch(setGistForksFailed(response.problem));
+      }
+    })
+  }
 };
 
 export const loadGists = (searchQuery: string) => {
-    return async (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
-        dispatch(requestGists());
-        return await fetch(`https://api.github.com/users/${searchQuery}/gists?page=1&per_page=2`)
-            .then(res => res.json())
-            .then(json => {
-              let gists = json;
-              for (let i = 0; i < gists.length; i++) {
-                  let item = fetch(gistForks(gists[i].id));
-                  gists[i]['forks'] = item.json();
-              }
-              dispatch(setGists([...gists]))
-            })
-            .then(() => dispatch(setGistsResolved(true)))
-            .catch(err => dispatch(setGistsFailed(err.message)))
-    }
-};
-
-export const resetGists = () => {
-    return (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
-        dispatch(setGistsResolved(false));
-        dispatch(setGists([]));
-    }
+  return (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
+    dispatch(requestGists());
+    api.get(`${baseUrl}users/${searchQuery}/gists?page=1&per_page=2`)
+      .then((response: ApiResponse<any>) => {
+        if(response.ok) {
+          if(response.data.length > 0) {
+            dispatch(setGistsResolved([...response.data]))
+          } else {
+            dispatch(setGistsFailed('User has 0 public gists.'));
+          }
+        } else {
+          let err = response.status === 404 ? 'User not found.' : response.problem;
+          dispatch(setGistsFailed(err));
+        }
+      })
+  }
 };
 
 export type ActionType =
 ReturnType<typeof requestGists
-| typeof setGists
 | typeof setGistsResolved
 | typeof setGistsFailed
-| typeof setSearchQueue
-| typeof setGistForks
+| typeof setGistForksResolved
+| typeof setGistForksFailed
 >;
