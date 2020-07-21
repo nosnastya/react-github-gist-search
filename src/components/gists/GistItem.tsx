@@ -35,9 +35,7 @@ const UnconnectedGistItem: React.FC<Props> = ({ gist, loadGistForks}) => {
   }, [])
 
   return (
-    <CardsWrapper
-        className="disp-flex flex-column flex-just--sb"
-    >
+    <CardsWrapper className="disp-flex flex-column">
       <div className="disp-flex mar-btm--10 text-gray">
         <span className="disp-flex flex-align--center">
           <ForkIcon/>
@@ -53,21 +51,18 @@ const UnconnectedGistItem: React.FC<Props> = ({ gist, loadGistForks}) => {
         </span>
       </div>
 
-      <div className="disp-flex mar-ver--10">
+      <div className="disp-flex flex-align--center mar-ver--10">
         <Image
           isCircle={true}
           imgUrl={gist.owner.avatar_url}
           imgAlt={gist.owner.login}
         />
-        <div className="flex-1">
         <CardInfo className="disp-flex flex-column mar-lft--10">
           <a className="text-blue disp-flex" href={gist.html_url}>
             {`${gist.owner.login}/`} <strong>{Object.keys(gist.files)[0]}</strong>
           </a>
           <span className="text-gray text-sm">{gist.description}</span>
         </CardInfo>
-        </div>
-
       </div>
 
       <div className="disp-flex flex-align--center mar-ver--10">
@@ -79,7 +74,7 @@ const UnconnectedGistItem: React.FC<Props> = ({ gist, loadGistForks}) => {
       <div>
         {gist.forks && gist.forks.length > 0 &&
           <>
-            <div className="text-gray text-sm mar-btm--10">Latest forks:</div>
+            <div className="text-gray mar-btm--10">Latest forks:</div>
             {gist.forks.map(fork =>
               <ForkItem fork={fork} key={fork.id} />
             )}

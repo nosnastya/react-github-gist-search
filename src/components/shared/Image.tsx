@@ -14,7 +14,6 @@ export const Image: React.FC<Props> = ({ height="50", width, imgUrl, imgAlt, isC
   const StyledImage = styled.img`
     border-radius: ${isCircle ? "50%" : "0"};
     display: block;
-    min-width: ${width ? width : '50'}px;
     width: ${isCircle ? height : width}px
   `;
 

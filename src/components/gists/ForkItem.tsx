@@ -16,7 +16,7 @@ export const ForkItem: React.FC<Props> = ({
           <StyledLink
             href={fork.html_url}
             key={fork.id}
-            className="disp-flex"
+            className="disp-flex flex-align--center"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -24,7 +24,7 @@ export const ForkItem: React.FC<Props> = ({
               isCircle={true}
               imgUrl={fork.owner.avatar_url}
               imgAlt={fork.owner.login}
-              height="20px"
+              height="30"
             />
             <span className="mar-lft--5">{fork.owner.login}</span>
           </StyledLink>

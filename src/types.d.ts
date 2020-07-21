@@ -20,7 +20,6 @@ type FileType = {
 type Gist = {
   id: string;
   html_url: string;
-  forks_url: string;
   files: FileType[];
   description: string;
   owner: User;

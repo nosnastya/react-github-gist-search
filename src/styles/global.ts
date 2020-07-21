@@ -9,6 +9,7 @@ export const GlobalStyles = createGlobalStyle`
     color: #24292e;
     background-color: #fff;
     word-wrap: break-word;
+    min-height: 100vh;
   }
 
   * {
@@ -66,10 +67,6 @@ export const GlobalStyles = createGlobalStyle`
 
   .flex-just--sb {
     justify-content: space-between;
-  }
-
-  .flex-1 {
-    flex: 1;
   }
 
   .mar-no {
