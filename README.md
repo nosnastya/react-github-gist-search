@@ -4,7 +4,8 @@
 
 <img src='https://github.githubassets.com/images/modules/logos_page/Octocat.png' height='60' alt='Redux Logo' aria-label='redux.js.org' />
 
-DEMO: [https://github-user-search-89oo89.netlify.app/](https://github-user-search-89oo89.netlify.app/)
+DEMO: [https://gist-search.netlify.app](https://gist-search.netlify.app
+)
 
 </div>
 
