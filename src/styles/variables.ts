@@ -4,12 +4,13 @@ export const variables = {
   screenSm:           `480px`,
 
   // -------COLORS--------- //
-  colorGreen:         `#67b26b`,
   colorBlue:          `#0366d6`,
   colorLightBlue:     `#4ca2cb`,
-  colorDarkGray:      `#24292e`,
+  colorLightestBlue:  `#6495ED`,
   colorGray:          `#586069`,
   colorLightGray:     `#dddddd`,
   colorLightestGray:  `#eeeeee`,
   colorWhite:         `#ffffff`,
+  colorRed:           `#db7093`,
+  colorLightRed:      `#f5eef1`
 }

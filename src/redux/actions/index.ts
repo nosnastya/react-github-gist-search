@@ -3,7 +3,7 @@ import { Dispatch, AnyAction } from "redux";
 import { RootState } from "../reducers/index";
 import { create, ApiResponse } from "apisauce";
 import {
-  REQUEST_GISTS,
+  ADD_SEARCH_ENTRY,
   SET_GISTS_RESOLVED,
   SET_GISTS_FAILED,
   SET_GIST_FORKS_RESOLVED,
@@ -14,8 +14,8 @@ const api = create({
   baseURL: 'https://api.github.com'
 });
 
-const requestGists = () => {
-  return typedAction(REQUEST_GISTS);
+const addSearchEntry = (searchEntry: string) => {
+  return typedAction(ADD_SEARCH_ENTRY, searchEntry);
 };
 
 const setGistsResolved = (gists: Gist[]) => {
@@ -52,8 +52,8 @@ export const loadGistForks = (id: string) => {
 
 export const loadGists = (searchQuery: string) => {
   return (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
-    dispatch(requestGists());
-    api.get(`users/${searchQuery}/gists?page=1&per_page=2`)
+    dispatch(addSearchEntry(searchQuery));
+    api.get(`users/${searchQuery}/gists`)
       .then((response: ApiResponse<any>) => {
         if(response.ok) {
           if(response.data.length > 0) {
@@ -70,7 +70,7 @@ export const loadGists = (searchQuery: string) => {
 };
 
 export type ActionType =
-ReturnType<typeof requestGists
+ReturnType<typeof addSearchEntry
 | typeof setGistsResolved
 | typeof setGistsFailed
 | typeof setGistForksResolved

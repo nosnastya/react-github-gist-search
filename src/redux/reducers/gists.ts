@@ -1,7 +1,7 @@
-import { SET_GIST_FORKS_RESOLVED, REQUEST_GISTS, SET_GISTS_RESOLVED, SET_GISTS_FAILED, SET_GIST_FORKS_FAILED} from "../actions/types";
+import { SET_GIST_FORKS_RESOLVED, ADD_SEARCH_ENTRY, SET_GISTS_RESOLVED, SET_GISTS_FAILED, SET_GIST_FORKS_FAILED} from "../actions/types";
 import { ActionType } from '../actions';
 
-const initialState: GistsState = { isLoading: false, isResolved: false, gists: [], error: '' };
+const initialState: GistsState = { isLoading: false, isResolved: false, gists: [], error: '', recentSearch: [] };
 
 function updateGist(newFork:any, oldGistList: Gist[]) {
   const { id, forks } = newFork;
@@ -12,6 +12,13 @@ function updateGist(newFork:any, oldGistList: Gist[]) {
     return gist;
   });
   return newGists;
+};
+
+function updateSearchResults(recentSearches:string[], newResult: string) {
+  const results = recentSearches ? [...recentSearches] : []
+  results.unshift(newResult)
+
+  return results
 }
 
 function gistsReducer(
@@ -19,12 +26,13 @@ function gistsReducer(
     action: ActionType
   ):GistsState {
     switch (action.type) {
-        case REQUEST_GISTS:
+        case ADD_SEARCH_ENTRY:
           return {
               ...state,
               isLoading: true,
               isResolved: false,
-              error: ''
+              error: '',
+              recentSearch: updateSearchResults(state.recentSearch, action.payload)
           };
 
         case SET_GIST_FORKS_RESOLVED :

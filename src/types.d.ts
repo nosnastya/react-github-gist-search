@@ -25,11 +25,13 @@ type Gist = {
   description: string;
   owner: User;
   forks: Fork[];
+  comments: number;
 };
 
 type GistsState = {
   isLoading: boolean;
   isResolved: boolean;
   gists: Gist[];
-  error: string
+  error: string,
+  recentSearch: string[]
 };

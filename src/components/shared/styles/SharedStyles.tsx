@@ -12,7 +12,6 @@ const loadingKeyframes = keyframes`
 
 export const LayoutWrapper = styled.div`
 	margin: 0 auto;
-	text-align: center;
 `
 
 export const Placeholder = styled.div`
@@ -33,18 +32,15 @@ export const Placeholder = styled.div`
   animation: ${loadingKeyframes} 1.2s infinite;
 `
 
-export const CardsWrapper = styled.div`
-  display: grid;
-  justify-content: center;
-  grid-template-columns: 150px 150px;
-  grid-gap: 10px;
-  margin: 20px 10px;
-  border-top: 1px solid ${variables.colorLightestGray};
-  padding-top: 40px;
-  @media (min-width: ${variables.screenSm}) {
-      grid-template-columns: 220px 220px;
-  }
-  @media (min-width: ${variables.screenMd}) {
-      grid-template-columns: 250px 250px 250px;
+export const Tag = styled.span`
+  display: inline-block;
+  padding: 6px 12px;
+  white-space: nowrap;
+  background-color: ${variables.colorLightestBlue};
+  color: white;
+  border-radius: 3px;
+
+  &:not(:first-child) {
+    margin-left: 5px;
   }
 `

@@ -10,11 +10,11 @@ type Props = {
   className?: string;
 };
 
-export const Image: React.FC<Props> = ({ height="50", width="auto", imgUrl, imgAlt, isCircle=false, className }) => {
+export const Image: React.FC<Props> = ({ height="50", width, imgUrl, imgAlt, isCircle=false, className }) => {
   const StyledImage = styled.img`
     border-radius: ${isCircle ? "50%" : "0"};
     display: block;
-    min-width: ${width}px;
+    min-width: ${width ? width : '50'}px;
     width: ${isCircle ? height : width}px
   `;
 

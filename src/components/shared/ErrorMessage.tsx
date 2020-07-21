@@ -6,7 +6,7 @@ type Props = {
 }
 
 export const ErrorMessage: React.FC<Props> = ({ errorText }) => {
-  const Message = styled.div`
+  const StyledErrorMessage = styled.div`
     color: palevioletred;
     border: 1px solid palevioletred;
     border-radius: 5px;
@@ -18,7 +18,7 @@ export const ErrorMessage: React.FC<Props> = ({ errorText }) => {
 
   return (
     <div className="mar-ver--20 mar-lft--10 disp-flex flex-align--center">
-      <Message>{errorText}</Message>
+      <StyledErrorMessage>{errorText}</StyledErrorMessage>
     </div>
   );
 };
