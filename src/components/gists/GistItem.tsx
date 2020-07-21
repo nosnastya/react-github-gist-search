@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import styles from "./GistItem.module.scss";
 import { ForkItem } from "./ForkItem";
-import { Avatar } from "../shared/Avatar";
+import { Image } from "../shared/Image";
 import { RootState } from "../../redux/reducers";
 import { bindActionCreators, Dispatch } from "redux";
 import { loadGistForks } from "../../redux/actions"
 import { connect } from "react-redux";
+import { Tag } from "../shared/Tag";
+import { CardsWrapper, CardInfo } from "./styles/GistsStyles";
 
 type OwnProps = {
   gist: Gist;
@@ -23,7 +24,7 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
       dispatch
   );
 
-  type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 const UnconnectedGistItem: React.FC<Props> = ({ gist, loadGistForks}) => {
 
@@ -33,26 +34,26 @@ const UnconnectedGistItem: React.FC<Props> = ({ gist, loadGistForks}) => {
   }, [])
 
   return (
-    <div
-        className={`${styles.cardWrapper} disp-flex flex-column flex-just--sb`}
+    <CardsWrapper
+        className="disp-flex flex-column flex-just--sb"
     >
-      <div className={`disp-flex ${styles.cardImgWrapper}`}>
-        <Avatar
+      <div className="disp-flex flex-column">
+        <Image
+          isCircle={true}
           imgUrl={gist.owner.avatar_url}
           imgAlt={gist.owner.login}
         />
-        <div className={`disp-flex flex-column ${styles.cardInfo}`}>
+        <CardInfo className="disp-flex flex-column">
           {gist.description}
-        </div>
+        </CardInfo>
       </div>
       <div className="disp-flex flex-align--center">
-        { gist.files && Object.values(gist.files).map((file: FileType, id: number) =>
-            <span
+        {gist.files && Object.values(gist.files).map((file: FileType, id: number) =>
+            <div
               key={id}
-              className={`${styles.tag} mar-lft--5`}
             >
-              {file.language}
-            </span>
+              <Tag className="mar-lft--5" tagText={file.language}/>
+            </div>
         )}
       </div>
       <div>
@@ -65,7 +66,7 @@ const UnconnectedGistItem: React.FC<Props> = ({ gist, loadGistForks}) => {
           </>
         }
       </div>
-    </div>
+    </CardsWrapper>
   );
 };
 

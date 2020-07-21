@@ -1,19 +1,18 @@
 import React from "react";
-import { Nav } from "./components/main/Nav";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { GistsList } from "./components/main/GistsList";
-import "./styles/styles.scss";
+import { GistsList } from "./routes/GistsList";
+import { GlobalStyles } from "./styles/global";
 
 const App = () => {
   return (
-    <div>
-      <Nav />
+    <>
+      <GlobalStyles/>
       <BrowserRouter>
         <Switch>
           <Route path="/" exact component={GistsList} />
         </Switch>
       </BrowserRouter>
-    </div>
+    </>
   );
 };
 

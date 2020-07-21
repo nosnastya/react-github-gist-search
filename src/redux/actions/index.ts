@@ -1,6 +1,7 @@
 import { typedAction } from "../helpers/typedAction";
 import { Dispatch, AnyAction } from "redux";
 import { RootState } from "../reducers/index";
+import { create, ApiResponse } from "apisauce";
 import {
   REQUEST_GISTS,
   SET_GISTS_RESOLVED,
@@ -8,10 +9,10 @@ import {
   SET_GIST_FORKS_RESOLVED,
   SET_GIST_FORKS_FAILED,
 } from "./types";
-import api from '../../helpers/api';
-import { ApiResponse } from "apisauce";
 
-const baseUrl = 'https://api.github.com/';
+const api = create({
+  baseURL: 'https://api.github.com'
+});
 
 const requestGists = () => {
   return typedAction(REQUEST_GISTS);
@@ -35,7 +36,7 @@ const setGistForksFailed = (error: string) => {
 
 export const loadGistForks = (id: string) => {
   return (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
-    api.get(`${baseUrl}gists/${id}/forks?page=1&per_page=3`)
+    api.get(`gists/${id}/forks?page=1&per_page=3`)
     .then((response: ApiResponse<any>) => {
       if(response.ok) {
         if(response.data.length > 0) {
@@ -52,7 +53,7 @@ export const loadGistForks = (id: string) => {
 export const loadGists = (searchQuery: string) => {
   return (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
     dispatch(requestGists());
-    api.get(`${baseUrl}users/${searchQuery}/gists?page=1&per_page=2`)
+    api.get(`users/${searchQuery}/gists?page=1&per_page=2`)
       .then((response: ApiResponse<any>) => {
         if(response.ok) {
           if(response.data.length > 0) {
