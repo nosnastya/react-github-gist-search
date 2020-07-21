@@ -23,7 +23,6 @@ export const ForkItem: React.FC<Props> = ({
             <Image
               isCircle={true}
               imgUrl={fork.owner.avatar_url}
-              imgAlt={fork.owner.login}
               height="30"
             />
             <span className="mar-lft--5">{fork.owner.login}</span>

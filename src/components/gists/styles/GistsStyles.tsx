@@ -54,7 +54,7 @@ export const RecentSearchWrapper = styled.div`
 export const GistsWrapper = styled.div`
   display: grid;
   justify-content: center;
-  grid-template-columns: 150px 150px;
+  grid-template-columns: auto;
   grid-gap: 10px;
   margin: 20px 10px;
   border-top: 1px solid ${variables.colorLightestGray};

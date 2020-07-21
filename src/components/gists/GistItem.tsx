@@ -55,7 +55,6 @@ const UnconnectedGistItem: React.FC<Props> = ({ gist, loadGistForks}) => {
         <Image
           isCircle={true}
           imgUrl={gist.owner.avatar_url}
-          imgAlt={gist.owner.login}
         />
         <CardInfo className="disp-flex flex-column mar-lft--10">
           <a className="text-blue disp-flex" href={gist.html_url}>
